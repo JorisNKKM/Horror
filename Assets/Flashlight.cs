@@ -1,11 +1,14 @@
 using UnityEngine;
-
+using TMPro;
 public class Flashlight : MonoBehaviour
 {
     public bool isOn;
     public Light light;
     public AudioSource source;
     public float charge;
+    public TextMeshPro chargeText;
+
+    
 
     void Update()
     {
@@ -15,21 +18,41 @@ public class Flashlight : MonoBehaviour
         {
             Switch();
         }
+        if(isOn)
+        {
+            charge-=5*Time.deltaTime;
+        }
+        if(charge<=0)
+        {
+            isOn = false;
+        }
+        light.intensity= charge/15;
+        int chargeINT = (int)charge;
+        
 
-        // TASK:
-        // flashlight discharges when on
-        // does not work when no energy
+        if(chargeINT <= 0)
+        {
+            chargeText.text="0%";
+        }
+        else if(chargeINT > 0)
+        {
+            chargeText.text = chargeINT.ToString()+"%";
+        }
+        
 
-        // BONUS:
-        // Reduce intensity or flicker light depending on charge
-        // Show charge level visually
 
-        // POST Flashlight.cs from github
+
     }
 
     void Switch()
     {
+        if (charge <= 0)
+        {
+            isOn = false;
+        }
+
         isOn = !isOn;
         source.Play();
+
     }
 }
